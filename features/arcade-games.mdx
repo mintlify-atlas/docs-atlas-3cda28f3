@@ -21,7 +21,12 @@ The `#juegos` section of Nexus Ciencia hosts two fully playable browser arcade g
 
 ## Switching Modes
 
-Clicking either mode button calls `switchGame(mode)`, which:
+Clicking either mode button calls `switchGame(mode)`, passing one of the two valid mode strings:
+
+- **`'space'`** — activates the Misión Espacial theme (rocket + meteor field).
+- **`'ocean'`** — activates the Explorador Abisal theme (submersible + abyssal trenches).
+
+The function:
 
 1. Updates the active/inactive CSS classes on `#btn-space-game` and `#btn-ocean-game` to reflect the selected mode.
 2. Updates the `#game-title` and `#overlay-msg` text to match the chosen theme.
