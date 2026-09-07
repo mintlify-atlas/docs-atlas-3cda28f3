@@ -1,0 +1,78 @@
+---
+title: "Knowledge Cards: Expanding Scientific Explanations"
+sidebarTitle: "Knowledge Base"
+description: "Nexus Ciencia's knowledge base presents four NASA–Navy science topics as interactive accordion cards, each with a summary and a full detailed analysis."
+---
+
+The `#explicaciones` section of Nexus Ciencia is a four-card knowledge base that delivers structured, expandable scientific content about the relationship between NASA and the U.S. Navy. Each card is visible on page load with a short summary paragraph; a full analytical report remains hidden until the reader explicitly requests it. The section heading labels this area **"Base de Conocimiento Científica"** and the sub-heading reads **"Explicación Detallada de Cada Tema"**.
+
+<Note>
+  All knowledge cards — titles, category labels, summaries, and full analysis text — are written in **Spanish** in the live portal. The topic names and descriptions on this page are English translations provided for documentation purposes.
+</Note>
+
+## Card Topics
+
+<CardGroup cols={2}>
+  <Card title="NASA–Navy Origins" icon="building-columns" href="/topics/nasa-navy-origins">
+    **Category:** Historia Institucional
+
+    Examines how NASA was founded as a civilian agency by President Eisenhower in 1958 and how the U.S. Navy's Project Vanguard and the Naval Research Laboratory directly seeded the personnel and technology that created NASA's Goddard Space Flight Center.
+  </Card>
+  <Card title="Astronaut Rescue at Sea" icon="anchor" href="/topics/astronaut-rescue">
+    **Category:** Operaciones de Salvamento
+
+    Documents the Navy's role in every crewed American splashdown, from Mercury and Apollo through the modern Artemis Orion capsule — covering the amphibious ships (USS Anchorage, USS San Diego), MH-60S helicopters, and Navy SEAL recovery divers deployed for each mission.
+  </Card>
+  <Card title="Ocean as Space Analog" icon="water" href="/topics/ocean-space-analog">
+    **Category:** Simulación Extrema
+
+    Details the **NEEMO** (NASA Extreme Environment Mission Operations) program, which stations astronauts for weeks at 19 meters depth inside the *Aquarius* underwater habitat off Florida. The seafloor's isolation, darkness, external pressure, and neutral buoyancy make it the closest Earth analog to the lunar or Martian surface.
+  </Card>
+  <Card title="Mariana Trench Technology" icon="fish-fins" href="/topics/mariana-trench-tech">
+    **Category:** Exploración Extrema
+
+    Traces how the U.S. Navy's 1960 descent of the bathyscaphe *Trieste* to Challenger Deep (≈ 11,000 m) pioneered pressure-resistant materials later adopted in spacecraft design, and how NASA today studies extremophile life in the trench to inform instruments that will search for life in the subsurface oceans of Jupiter's moon Europa and Saturn's moon Enceladus.
+  </Card>
+</CardGroup>
+
+## UI Pattern: Summary + Expandable Analysis
+
+Every knowledge card follows the same two-layer content pattern:
+
+**Layer 1 — Summary (always visible)**
+A short paragraph of 2–3 sentences introduces the topic and establishes the key claim. This text is rendered unconditionally in the card body and is immediately readable without any user interaction.
+
+**Layer 2 — Full Analysis (hidden by default)**
+A deeper multi-paragraph report is wrapped in a `div` with the CSS class `hidden`, which sets `display: none`. This element carries an `id` of the form `detail-N` (e.g., `detail-1`, `detail-2`, `detail-3`, `detail-4`). The analysis becomes visible only after the user clicks the **Leer análisis completo** button.
+
+## The `toggleDetails(id)` Function
+
+The expand/collapse behavior is driven by a single JavaScript utility function:
+
+```js
+function toggleDetails(id) {
+  const el = document.getElementById(id);
+  const label = document.getElementById('label-' + id);
+  if (el.classList.contains('hidden')) {
+    el.classList.remove('hidden');
+    if (label) label.textContent = 'Ocultar análisis';
+  } else {
+    el.classList.add('hidden');
+    if (label) label.textContent = 'Leer análisis completo';
+  }
+}
+```
+
+**How it works:**
+
+1. Receives the string `id` corresponding to the target detail `div` (e.g., `'detail-1'`).
+2. Retrieves the detail element and its associated label `span` (id `label-detail-N`).
+3. **If the element has the `hidden` class** — removes it to reveal the full analysis and updates the button label to *"Ocultar análisis"*.
+4. **If the element does not have the `hidden` class** — adds it back to re-hide the analysis and resets the button label to *"Leer análisis completo"*.
+
+This is a pure CSS-class toggle with no height animations or third-party libraries. The button itself is a `<button>` element styled in cyan monospace font and positioned immediately below the summary paragraph in each card.
+
+| State | Detail `div` class | Button label |
+|---|---|---|
+| Collapsed (default) | `hidden` | Leer análisis completo |
+| Expanded | *(class removed)* | Ocultar análisis |

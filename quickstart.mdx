@@ -1,47 +1,91 @@
 ---
-title: "Quickstart"
-description: "Begin with a guide on the fastest path to a successful outcome"
+title: "Get Started with Nexus Ciencia in 4 Steps"
+sidebarTitle: "Quickstart"
+description: "Learn how to open Nexus Ciencia, chat with the AI assistant, expand a knowledge card, and play your first arcade mission in under five minutes."
 ---
 
-Describe how someone begins using your product. What is the first thing they need to do? Are there any prerequisites?
-
-A quickstart should take someone from zero to using your product. They'll get a quick win and a sense of what they can accomplish.
-
-## Prerequisites
-
-Before you begin, you must have:
-
-- Requirement one (for example, Node.js 18+, a free account, an API key)
-- Requirement two (for example, a compatible device, a compatible browser, a compatible operating system)
-
-## Get started
+Nexus Ciencia is designed to be immediately usable — no setup, no accounts. This quickstart walks you through the four core actions: opening the portal, sending your first AI message, reading a full knowledge-card analysis, and launching your first arcade game. You'll be up and running in under five minutes.
 
 <Steps>
-  <Step title="Install">
-    Describe how to install your product or sign up.
+  <Step title="Open the Portal">
+    Open `NEXUS.html` in any modern web browser (locally or from a static host). The page loads instantly with a full-screen hero section.
 
-    ```bash
-    npm install your-package
-    ```
+    At the top of every page you'll find the **fixed navigation bar**, which stays visible as you scroll. It contains five links:
+
+    | Nav Link | Destination |
+    |---|---|
+    | **Asistente IA** | `#ia-chat` — the AI chat section |
+    | **Arcade** | `#juegos` — the arcade game section |
+    | **Explicaciones Detalladas** | `#explicaciones` — the knowledge cards |
+    | **Hitos 2020-2026** | `#cronologia` — the historical timeline |
+    | **Fuentes** | `#fuentes` — official source links |
+
+    A prominent **"Preguntar a la IA"** (Ask the AI) button in the top-right corner of the navbar also scrolls you directly to the chat section.
   </Step>
-  <Step title="Configure">
-    Describe any setup or configuration needed before first use.
 
-    ```bash
-    your-cli init
+  <Step title="Chat with the AI Assistant">
+    Click **Asistente IA** in the navbar or the **Preguntar a la IA** button — both take you to the `#ia-chat` section.
+
+    You'll see a chat window pre-loaded with a greeting from the AI. Type your question into the input field at the bottom and press **Enviar** (Send) or hit **Enter**.
+
+    A good first question to try:
+
     ```
+    ¿Cómo ayuda la Marina a recuperar las naves de la NASA?
+    ```
+
+    The assistant replies within milliseconds using its built-in knowledge base, which covers:
+    - The NASA–Navy institutional origins
+    - Astronaut splashdown and ocean recovery operations
+    - The Artemis II lunar flyby mission (2026)
+    - The Mariana Trench and extreme-environment technology
+    - NEEMO underwater astronaut training
+
+    No internet connection is required for the AI — all responses are generated from the knowledge base embedded directly in the page.
   </Step>
-  <Step title="Run it">
-    Show the first thing a user does to see it working.
 
-    ```bash
-    your-cli start
-    ```
+  <Step title="Expand a Knowledge Card">
+    Scroll down to the **Explicaciones Detalladas** section (`#explicaciones`), or click the matching link in the navbar.
+
+    You'll find a 2×2 grid of knowledge cards, each covering one of the four scientific topics:
+
+    1. **¿La Marina creó a la NASA?** — NASA–Navy institutional origins
+    2. **Rescatistas del Espacio** — astronaut ocean rescue operations
+    3. **El Océano como Análogo Espacial** — NEEMO underwater space training
+    4. **Tecnología de la Fosa de las Marianas** — Mariana Trench engineering
+
+    Each card shows a short summary paragraph by default. To read the full analysis, click the **"Leer análisis completo"** button at the bottom of any card. The card expands in place to reveal the complete deep-dive text. Click the same button again (now labelled *"Ocultar análisis"*) to collapse it.
+  </Step>
+
+  <Step title="Play an Arcade Game">
+    Scroll to the **Misiones de Pilotaje** section (`#juegos`), or click **Arcade** in the navbar.
+
+    Select your game mode using the two buttons above the canvas:
+
+    - 🚀 **Misión Espacial** — pilot a rocket through a meteor field in outer space
+    - 🌊 **Explorador Abisal** — navigate a deep-sea submersible through underwater obstacles
+
+    Once you've chosen a mode, click the **"¡Comenzar Juego!"** button in the centre of the canvas to start.
+
+    Your goal is to travel as far as possible without hitting an obstacle. Your distance score (in metres) is shown in real time above the canvas. When your craft hits an obstacle, the game ends and displays your final distance — click **"¡Comenzar Juego!"** again to retry.
   </Step>
 </Steps>
 
-<Tip>
-  Give people a way to get help. This could be a link to a support page, a chat with a customer support agent, or a forum for your product.
+## Keyboard & Touch Controls
 
-  Example: Need help? Reach out to us at [support@yourcompany.com](mailto:support@yourcompany.com).
+Both arcade games share the same control scheme. Each input applies a single **burst of upward thrust** to your craft — in *Misión Espacial* this lifts the rocket, and in *Explorador Abisal* this causes the submersible to rise toward the surface. Gravity pulls the craft back down continuously between inputs.
+
+| Input | Action |
+|---|---|
+| **Spacebar** | Apply thrust (desktop) |
+| **Mouse click** on the canvas | Apply thrust (desktop / trackpad) |
+| **"TOCA AQUÍ PARA IMPULSAR"** button | Apply thrust (mobile tap, shown only on small screens) |
+
+Tap or press repeatedly in short bursts to maintain altitude and thread the gaps between obstacles.
+
+<Tip>
+  For the richest AI answers, ask about specific programs by name. Try:
+  - **"¿Qué es la misión Artemis II?"** — for details on the 2026 crewed lunar flyby
+  - **"¿Qué es NEEMO?"** — for the full story on underwater astronaut training at *Aquarius*
+  - **"¿Por qué estudia la NASA la Fosa de las Marianas?"** — to learn how deep-ocean extremophiles inform the search for life on Europa and Enceladus
 </Tip>

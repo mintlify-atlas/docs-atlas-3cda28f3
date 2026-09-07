@@ -1,0 +1,115 @@
+---
+title: "AI Assistant: Ask Anything About NASA and the Navy"
+sidebarTitle: "AI Assistant"
+description: "Nexus Ciencia's built-in AI assistant answers questions about NASA missions, U.S. Navy operations, and ocean science with no regional restrictions."
+---
+
+Nexus Ciencia embeds a fully self-contained virtual assistant — labeled **Asistente Virtual Libre de Restricciones** — directly in the `#ia-chat` section of the portal. Because the assistant is powered by a local, keyword-based knowledge base rather than an external language model API, it works entirely offline and is subject to no regional access restrictions. Type a question in Spanish, press **Enviar**, and the assistant replies instantly with curated scientific content drawn from the five topic areas below.
+
+## How It Works
+
+When a user submits a message via the chat form, two JavaScript functions collaborate to produce a reply:
+
+### `handleUserChat(event)`
+
+Attached to the form's `onsubmit` event, this function:
+
+1. Calls `event.preventDefault()` to stop a page reload.
+2. Reads the trimmed value from the `#user-input` text field.
+3. Appends the user message to the `#chat-history` div via the internal `appendMessage()` helper.
+4. Clears the input field.
+5. After a 400 ms delay (simulating a thinking pause), calls `generateAnswer(prompt)` and appends the bot reply.
+
+### `generateAnswer(prompt)`
+
+This function contains the entire intelligence of the assistant:
+
+1. Lowercases the incoming `prompt` string.
+2. Iterates through every entry in the `knowledgeBase` array.
+3. For each entry, checks whether **any** of its `keywords` appear as a substring of the lowercased prompt using `Array.prototype.some()`.
+4. Returns the `response` string of the **first matching** entry.
+5. If no entry matches, returns a **default fallback** response about the general NASA–Navy collaboration.
+
+```js
+function generateAnswer(prompt) {
+  const lower = prompt.toLowerCase();
+  for (let item of knowledgeBase) {
+    if (item.keywords.some(kw => lower.includes(kw))) {
+      return item.response;
+    }
+  }
+  return "Es una excelente pregunta. La **NASA** lidera los programas de viaje al espacio, " +
+    "mientras que la **Marina de EE. UU.** colabora en los rescates de naves en el océano, " +
+    "en pruebas de ingeniería submarina y en la formación de muchos de sus astronautas.";
+}
+```
+
+## Conversation UI
+
+The chat interface lives inside a `glass`-styled card rendered at `#ia-chat`:
+
+- **`#chat-history`** — a scrollable `div` (`height: 320px`, `overflow-y: auto`) that accumulates all message bubbles. User bubbles are right-aligned with an orange NASA avatar; bot bubbles are left-aligned with a cyan IA avatar.
+- **`#user-input`** — a single-line text field. The `required` attribute prevents empty submissions.
+- **Send button** — submits the form and triggers `handleUserChat(event)`.
+
+The assistant greets the user with a welcome message pre-rendered in `#chat-history` before any interaction:
+
+> *¡Hola! Soy tu asistente científico. Puedes preguntarme sobre la creación de la NASA, los amerizajes con la Marina de EE. UU., la misión Artemis II o las profundidades del océano. ¿Qué deseas saber?*
+
+## Knowledge Base Topics
+
+The `knowledgeBase` array holds five objects. The table below maps each topic to its trigger keywords and the subject of its response.
+
+| Topic | Trigger Keywords | Response Subject |
+|---|---|---|
+| Marina / Origen | `marina`, `creo`, `crear`, `creada`, `origen`, `fundada` | NASA–Navy origins; Project Vanguard; Goddard Space Flight Center |
+| Rescate / Mar | `rescate`, `mar`, `oceano`, `caen`, `capsula`, `amerizaje` | Splashdown recovery operations; USS Anchorage; Navy SEAL divers |
+| Artemis / Luna | `artemis`, `luna`, `2026`, `mision` | Artemis II crewed lunar flyby; Orion capsule |
+| Fosa / Marianas | `fosa`, `marianas`, `profundo`, `abismo` | Mariana Trench; Trieste; extremophile life; Europa & Enceladus |
+| NEEMO / Submarino | `neemo`, `entrenar`, `submarino`, `aquarius` | Aquarius underwater habitat; neutral-buoyancy EVA training |
+
+<Note>
+  For the best keyword matching, phrase your questions in **Spanish**. The `generateAnswer` function lowercases and searches for Spanish keywords (e.g., `marina`, `amerizaje`, `fosa`) as substrings. English-only questions will typically fall through to the default fallback response.
+</Note>
+
+## Topic Details
+
+Full response text for each knowledge-base entry, exactly as stored in the source:
+
+<AccordionGroup>
+  <Accordion title="Marina / Origen — NASA–Navy Origins">
+    > "La NASA **no fue creada directamente por la Marina**, sino por el presidente Eisenhower en 1958 como una agencia civil. Sin embargo, la **Marina de EE. UU.** lideraba el *Proyecto Vanguard* y aportó gran parte de la tecnología inicial y del personal que fundó el Centro Goddard de la NASA."
+
+    **Trigger keywords:** `marina`, `creo`, `crear`, `creada`, `origen`, `fundada`
+  </Accordion>
+
+  <Accordion title="Rescate / Mar — Splashdown Recovery">
+    > "Cuando las naves de la NASA caen al mar (amerizaje), la **Marina de EE. UU.** despliega portaaviones, buzos de combate y helicópteros para asegurar la nave Orión o Apolo y llevar a los astronautas sanos a salvo a la cubierta médica del buque."
+
+    **Trigger keywords:** `rescate`, `mar`, `oceano`, `caen`, `capsula`, `amerizaje`
+  </Accordion>
+
+  <Accordion title="Artemis / Luna — Artemis Program">
+    > "El programa **Artemis** lleva humanos de regreso a la Luna. En **Artemis II**, cuatro astronautas realizan un sobrevuelo histórico alrededor de la Luna abordo de la cápsula Orión antes del descenso a la superficie lunar."
+
+    **Trigger keywords:** `artemis`, `luna`, `2026`, `mision`
+  </Accordion>
+
+  <Accordion title="Fosa / Marianas — Mariana Trench Technology">
+    > "La **Fosa de las Marianas** es el punto más profundo del planeta (casi 11 km). Soporta presiones extremas y sus formas de vida sirven para estudiar cómo podrían existir seres vivos en océanos extraterrestres de Europa o Encélado."
+
+    **Trigger keywords:** `fosa`, `marianas`, `profundo`, `abismo`
+  </Accordion>
+
+  <Accordion title="NEEMO / Submarino — Underwater Astronaut Training">
+    > "En las misiones NEEMO, la NASA envía astronautas a la estación bajo el mar **Aquarius** para vivir semanas a varios metros de profundidad, simulando caminatas espaciales en condiciones de ingravidez."
+
+    **Trigger keywords:** `neemo`, `entrenar`, `submarino`, `aquarius`
+  </Accordion>
+
+  <Accordion title="Default Fallback — General NASA–Navy Collaboration">
+    Returned whenever none of the five topic keyword sets match the user's input:
+
+    > "Es una excelente pregunta. La **NASA** lidera los programas de viaje al espacio, mientras que la **Marina de EE. UU.** colabora en los rescates de naves en el océano, en pruebas de ingeniería submarina y en la formación de muchos de sus astronautas."
+  </Accordion>
+</AccordionGroup>

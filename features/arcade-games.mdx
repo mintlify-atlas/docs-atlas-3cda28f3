@@ -1,0 +1,109 @@
+---
+title: "Arcade Games: Space Missions and Deep-Sea Exploration"
+sidebarTitle: "Arcade Games"
+description: "Nexus Ciencia includes two browser arcade games — a space rocket dodger and a deep-sea submersible explorer — built on the HTML5 Canvas API."
+---
+
+The `#juegos` section of Nexus Ciencia hosts two fully playable browser arcade games rendered onto a single HTML5 `<canvas>` element (`id="arcadeCanvas"`, 700 × 360 px). Both games share the same physics engine and obstacle system — only the visual theme, player sprite, background color, and flavor text change between modes. No plugins, downloads, or internet connection are required.
+
+<CardGroup cols={2}>
+  <Card title="Misión Espacial" icon="rocket">
+    **Mode key:** `space`
+
+    Pilot an orange rocket through an asteroid field. The background is deep-space black (`#030712`) dotted with white parallax stars. Obstacles are rendered as dark slate meteor columns. The game title reads **"Lanza el Cohete a la Luna"** and the overlay prompt instructs players to dodge meteors.
+  </Card>
+  <Card title="Explorador Abisal" icon="water">
+    **Mode key:** `ocean`
+
+    Navigate a teal submersible through the abyssal trenches. The background shifts to deep navy (`#031a24`) with bioluminescent green particle dots. Obstacles become dark underwater rock formations. The game title reads **"Explorador de las Fosas Abisales"** and the overlay prompt describes dodging marine obstacles.
+  </Card>
+</CardGroup>
+
+## Switching Modes
+
+Clicking either mode button calls `switchGame(mode)`, which:
+
+1. Updates the active/inactive CSS classes on `#btn-space-game` and `#btn-ocean-game` to reflect the selected mode.
+2. Updates the `#game-title` and `#overlay-msg` text to match the chosen theme.
+3. Calls the internal `resetGame()` helper — resetting score, player position, obstacle list, and frame counter — then re-renders the static preview canvas.
+
+Mode switches take effect **without reloading the page**, preserving the player's current session.
+
+```js
+function switchGame(mode) {
+  currentMode = mode;
+  // ... update button styles and title text ...
+  resetGame();
+}
+```
+
+## Controls
+
+| Input | Action |
+|---|---|
+| `Space` key | Applies upward lift impulse to the player (`player.vy = player.lift`) |
+| Mouse click on canvas | Same lift impulse as Space |
+| Tap `#touch-btn` (mobile) | Same lift impulse — mobile-only button visible on small screens |
+| Click **¡Comenzar Juego!** overlay button | Calls `startGame()` to begin a new run |
+
+<Tip>
+  Tap or click **rhythmically** rather than holding — each input fires a single lift impulse. The goal is to keep the player sprite near the **vertical mid-point** of the canvas (≈ 180 px) so you have equal reaction room above and below as gaps appear.
+</Tip>
+
+## Game Physics
+
+All physics values are stored as properties of the `player` object and remain constant between modes:
+
+| Parameter | Value | Description |
+|---|---|---|
+| `gravity` | `0.28` | Added to `player.vy` every frame, pulling the player downward |
+| `lift` | `-6.2` | Assigned to `player.vy` on each jump input, pushing upward |
+| Obstacle speed | `2.8 px/frame` | Each obstacle moves leftward by 2.8 px per frame |
+| Obstacle spawn rate | Every `90` frames | A new obstacle pair is pushed when `frameCount % 90 === 0` |
+| Gap height | `155 px` | Fixed vertical opening between top and bottom obstacle segments |
+| Min obstacle height | `35 px` | Minimum height for each obstacle column segment |
+| Player size | `24 × 24 px` | Bounding box used for collision detection |
+| Score display | `Math.floor(score / 5)` m | Score increments by 1 each frame; shown distance divides by 5 |
+
+## JavaScript Functions
+
+### `startGame()`
+
+Resets all game state variables (`score`, `player.y`, `player.vy`, `obstacles`, `frameCount`), hides the `#game-overlay`, cancels any existing animation frame, and calls `gameLoop()` to begin the run.
+
+### `triggerJump()`
+
+Guards against calls while `isPlaying` is `false`, then sets `player.vy = player.lift` (`-6.2`), producing an immediate upward velocity burst.
+
+### `gameLoop()`
+
+The core animation callback, scheduled via `requestAnimationFrame`:
+
+1. Increments `frameCount` and `score` by 1.
+2. Updates the `#game-score` display with `Math.floor(score / 5)` meters.
+3. Applies gravity: `player.vy += player.gravity` then `player.y += player.vy`.
+4. Clamps the player to the top edge (`player.y = 0`) and calls `gameOver()` if the player touches the bottom edge.
+5. Spawns a new obstacle pair every 90 frames with a randomized `topHeight` between `minHeight` (35) and `maxHeight` (`canvas.height − gap − minHeight`).
+6. Moves each obstacle leftward by `2.8 px`, runs the bounding-box collision check, and removes off-screen obstacles.
+7. Calls `draw()` to render the frame, then re-schedules itself.
+
+### `gameOver()`
+
+Sets `isPlaying = false`, shows the `#game-overlay`, updates `#overlay-status` to *"¡Fin del Trayecto!"* and `#overlay-msg` to display the final distance in meters.
+
+### `switchGame(mode)`
+
+Described in [Switching Modes](#switching-modes) above.
+
+### `draw()`
+
+Clears and repaints the canvas each frame:
+
+- Fills the background with the mode-specific color.
+- Renders 20 animated parallax particles (white stars in space mode, green bioluminescent dots in ocean mode) using a deterministic position formula based on `frameCount`.
+- Draws the player sprite: an orange triangle with a cyan exhaust flame in space mode, or a teal circle with a dark viewport window in ocean mode.
+- Draws top and bottom obstacle columns in the mode-specific color.
+
+### `drawStaticPreview()`
+
+Called during `resetGame()` to paint a blank mode-colored background onto the canvas while the overlay is visible, avoiding a stale frame from a previous run.

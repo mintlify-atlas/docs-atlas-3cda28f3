@@ -1,0 +1,77 @@
+{
+  "projectType": "saas",
+  "projectName": "Nexus Ciencia",
+  "projectDescription": "An interactive Spanish-language educational web portal exploring the relationship between NASA and the U.S. Navy, featuring detailed scientific articles, an integrated AI assistant, arcade mini-games, and a historical timeline.",
+  "theme": "almond",
+  "primaryColor": "#00f0ff",
+  "lightColor": "#00e5a3",
+  "darkColor": "#030712",
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Overview",
+        "groups": [
+          {
+            "group": "Get Started",
+            "pages": [
+              "introduction",
+              "quickstart"
+            ]
+          },
+          {
+            "group": "Core Features",
+            "pages": [
+              "features/ai-assistant",
+              "features/arcade-games",
+              "features/knowledge-base"
+            ]
+          },
+          {
+            "group": "Scientific Topics",
+            "pages": [
+              "topics/nasa-navy-origins",
+              "topics/astronaut-rescue",
+              "topics/ocean-space-analog",
+              "topics/mariana-trench-tech"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Reference",
+        "groups": [
+          {
+            "group": "Timeline & History",
+            "pages": [
+              "reference/timeline",
+              "reference/missions"
+            ]
+          },
+          {
+            "group": "Resources",
+            "pages": [
+              "reference/official-sources",
+              "reference/glossary"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "keyFeatures": [
+    "Interactive AI assistant specialized in NASA and U.S. Navy topics (no regional restrictions)",
+    "Two arcade mini-games: space rocket mission and deep-sea explorer",
+    "Expandable accordion knowledge cards covering NASA–Navy history",
+    "2020–2026 historical milestones timeline (Artemis I, Artemis II)",
+    "Curated official sources: NASA, US Navy, NOAA Ocean Explorer",
+    "Dark-space visual theme with glassmorphism UI built with Tailwind CSS"
+  ],
+  "publicApiSurface": [
+    "toggleDetails(id) — expand/collapse knowledge card accordion",
+    "handleUserChat(event) — submit question to local AI assistant",
+    "generateAnswer(prompt) — keyword-based knowledge base lookup",
+    "switchGame(mode) — toggle between 'space' and 'ocean' arcade modes",
+    "startGame() — initialize and run the arcade canvas game loop",
+    "triggerJump() — player impulse action (spacebar / click / touch)"
+  ]
+}
